@@ -15,10 +15,12 @@ public class ConfigurationHandler {
     public static Map<Integer, List<DropProperties>> dropsList = new HashMap();
 
     public static Configuration config;
+    public static int[] biomeIDs = new int[1];
 
     public static void init(FMLPreInitializationEvent event)
     {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+
         config.load();
 
         dropParser(config.get("Industrial_Mob_Farm", "Overworld", defaultDropsOverworld, "Overworld drops - Chance->Mod Id:Item Id@Metadata#Biome type required").getStringList(), 0);
@@ -26,6 +28,29 @@ public class ConfigurationHandler {
         dropParser(config.get("Industrial_Mob_Farm", "End", defaultDropsEnd, "End drops - Chance->Mod Id:Item Id@Metadata#Biome type required").getStringList(), 1);
 
         config.save();
+
+        for (int c = 0; c < biomeIDs.length; c++){
+            biomeIDs[c] = (5 + c);
+        }
+        try
+        {
+            config.load();
+
+            biomeIDs[0] = config.get("3 - Common Biomes", "IR_Nether", 5).getInt();
+
+            config.save();
+        }
+        catch (Exception e)
+        {
+            for (int c = 0; c < biomeIDs.length; c++){
+                biomeIDs[c] = (5 + c);
+            }
+        }
+        finally {
+            if (config.hasChanged()) {
+                config.save();
+            }
+        }
     }
 
     public static void dropParser(String[] rawDrops, int dimensionID)
