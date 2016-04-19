@@ -8,9 +8,11 @@ import com.ai_kira_five.industrialreality.common.util.LogHelper;
 import com.ai_kira_five.industrialreality.common.util.ModInfo;
 import com.ai_kira_five.industrialreality.common.util.VersionChecker;
 import com.ai_kira_five.industrialreality.gui.GuiFactory;
+import com.ai_kira_five.industrialreality.proxy.CommonProxy;
 import com.ai_kira_five.industrialreality.world.WorldTypeIR;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -23,13 +25,17 @@ import net.minecraftforge.common.MinecraftForge;
  */
 
 @Mod(modid = ModInfo.MOD_ID, version = ModInfo.MOD_VERSION, name = ModInfo.MOD_NAME, dependencies = ModInfo.MOD_DEPENDENCUIES)
-public class IndustrialReality {
-    @Mod.Instance("Idustrial_Reality")
+public class IndustrialReality
+{
+    @Mod.Instance(ModInfo.MOD_ID)
     public static IndustrialReality instance;
     public static final WorldTypeIR IR_Default = new WorldTypeIR("IR_WT");
     public VersionChecker versionChecker;
     public static LogHelper logHelper = new LogHelper(new ModInfo());
     public static final String messagePipeline = null;
+
+    @SidedProxy(clientSide = ModInfo.PROXY_LOC + "ClientProxy", serverSide = ModInfo.PROXY_LOC + "CommonProxy")
+    public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
